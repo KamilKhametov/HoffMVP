@@ -4,8 +4,8 @@ public interface MainPresenterInterface {
 
     // Дешевые товары
     void getProductsDesc();
-//    void getProductsAsc();
-//    void getProductsPopular();
-//    void getProductsDiscount();
+    void getProductsAsc();
+    void getProductsPopular();
+    void getProductsDiscount();
 
 }
