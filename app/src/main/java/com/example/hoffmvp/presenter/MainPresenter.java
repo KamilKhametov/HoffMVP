@@ -5,7 +5,7 @@ import com.example.hoffmvp.contract.MainViewInterface;
 import com.example.hoffmvp.model.ProductResponse;
 import com.example.hoffmvp.my_interface.ApiConfig;
 import com.example.hoffmvp.my_interface.ApiService;
-import com.example.hoffmvp.network.RetrofitInstance;
+import com.example.hoffmvp.network.DataManager;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -16,24 +16,17 @@ import io.reactivex.schedulers.Schedulers;
 public class MainPresenter implements MainPresenterInterface {
 
     MainViewInterface mainViewInterface;
+    DataManager dataManager;
 
-    public MainPresenter( MainViewInterface mainViewInterface ) {
+    public MainPresenter( MainViewInterface mainViewInterface, DataManager dataManager ) {
         this.mainViewInterface=mainViewInterface;
+        this.dataManager=dataManager;
     }
 
     // Сортировка
     // Сначала дешевые
     public Observable<ProductResponse> getObservableDesc(){
-        return RetrofitInstance.getRetrofitInstance ().create ( ApiService.class )
-                .getProducts ( ApiConfig.category_id,
-                               "price",
-                               "asc",
-                               ApiConfig.limit,
-                               ApiConfig.offset,
-                               ApiConfig.device_id,
-                               ApiConfig.isAndroid,
-                               ApiConfig.app_version,
-                               ApiConfig.location )
+        return dataManager.getDataDesc ()
                 .subscribeOn( Schedulers.io())
                 .observeOn( AndroidSchedulers.mainThread());
     }
@@ -67,16 +60,7 @@ public class MainPresenter implements MainPresenterInterface {
 
     // Сначала дорогие
     public Observable<ProductResponse> getObservableAsc(){
-        return RetrofitInstance.getRetrofitInstance ().create ( ApiService.class )
-                .getProducts ( ApiConfig.category_id,
-                               "price",
-                               "desc",
-                               ApiConfig.limit,
-                               ApiConfig.offset,
-                               ApiConfig.device_id,
-                               ApiConfig.isAndroid,
-                               ApiConfig.app_version,
-                               ApiConfig.location )
+        return dataManager.getDataAsc ()
                 .subscribeOn( Schedulers.io())
                 .observeOn( AndroidSchedulers.mainThread());
     }
@@ -108,18 +92,9 @@ public class MainPresenter implements MainPresenterInterface {
     }
 
 
-    // Сначала дорогие
+    // Сначала популярные
     public Observable<ProductResponse> getObservablePopular(){
-        return RetrofitInstance.getRetrofitInstance ().create ( ApiService.class )
-                .getProducts ( ApiConfig.category_id,
-                               ApiConfig.sort_by,
-                               ApiConfig.sort_type,
-                               ApiConfig.limit,
-                               ApiConfig.offset,
-                               ApiConfig.device_id,
-                               ApiConfig.isAndroid,
-                               ApiConfig.app_version,
-                               ApiConfig.location )
+        return dataManager.getDataPopular ()
                 .subscribeOn( Schedulers.io())
                 .observeOn( AndroidSchedulers.mainThread());
     }
@@ -152,18 +127,9 @@ public class MainPresenter implements MainPresenterInterface {
     }
 
 
-    // Сначала дорогие
+    // Сначала товары со скидкой
     public Observable<ProductResponse> getObservableDiscount(){
-        return RetrofitInstance.getRetrofitInstance ().create ( ApiService.class )
-                .getProducts ( ApiConfig.category_id,
-                               "discount",
-                               ApiConfig.sort_type,
-                               ApiConfig.limit,
-                               ApiConfig.offset,
-                               ApiConfig.device_id,
-                               ApiConfig.isAndroid,
-                               ApiConfig.app_version,
-                               ApiConfig.location )
+        return dataManager.getDataDiscount ()
                 .subscribeOn( Schedulers.io())
                 .observeOn( AndroidSchedulers.mainThread());
     }

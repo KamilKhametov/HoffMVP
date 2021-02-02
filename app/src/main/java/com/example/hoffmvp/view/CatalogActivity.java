@@ -3,14 +3,13 @@ package com.example.hoffmvp.view;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridLayout;
+
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,6 +18,7 @@ import com.example.hoffmvp.R;
 import com.example.hoffmvp.adapter.AdapterCatalog;
 import com.example.hoffmvp.contract.MainViewInterface;
 import com.example.hoffmvp.model.ProductResponse;
+import com.example.hoffmvp.App;
 import com.example.hoffmvp.presenter.MainPresenter;
 
 public class CatalogActivity extends AppCompatActivity implements MainViewInterface, AdapterView.OnItemSelectedListener {
@@ -34,6 +34,7 @@ public class CatalogActivity extends AppCompatActivity implements MainViewInterf
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_catalog );
+
 
         // Установка actionBar
         setActionBarTitleCatalog ();
@@ -53,7 +54,7 @@ public class CatalogActivity extends AppCompatActivity implements MainViewInterf
     }
 
     private void setupMVP() {
-        mainPresenter = new MainPresenter ( this );
+        mainPresenter = new MainPresenter ( this, App.getDataManager () );
     }
 
     private void setupViews() {
@@ -126,8 +127,10 @@ public class CatalogActivity extends AppCompatActivity implements MainViewInterf
         }
     }
 
+
     @Override
     public void onNothingSelected( AdapterView<?> parent ) {
 
     }
+
 }
